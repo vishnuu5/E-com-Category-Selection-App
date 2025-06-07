@@ -2,7 +2,7 @@
 
 A modern e-commerce application with user authentication and personalized category selection built with Next.js, MongoDB, and Tailwind CSS.
 
-##Demo======
+## Demo
 click[Here](https://e-com-category-selection-app.vercel.app)
 
 ## Features
