@@ -63,9 +63,6 @@ export default function CategoriesPage() {
             : cat
         )
       );
-
-      // Here you would make the API call
-      // const response = await fetch("/api/user/interests", { ... })
     } catch (error) {
       console.error("Failed to update interests:", error);
     } finally {
