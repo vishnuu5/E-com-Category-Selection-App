@@ -34,12 +34,9 @@ export async function POST(request) {
     let otp = "12345678"; // Default OTP for development
     let emailSent = false;
 
-   
     const emailFunctions = await getEmailFunctions();
     if (emailFunctions) {
       otp = emailFunctions.generateOTP();
-
-     
       if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
         const emailResult = await emailFunctions.sendOTPEmail(
           email,
@@ -59,7 +56,7 @@ export async function POST(request) {
     const db = client.db();
     const otpCollection = db.collection("otps");
 
-    
+    // Store OTP in database
     await otpCollection.insertOne({
       email,
       otp,
@@ -75,6 +72,7 @@ export async function POST(request) {
           ? "OTP sent successfully to your email"
           : "OTP generated successfully (email service not configured)",
         emailSent,
+
         ...(process.env.NODE_ENV === "development" && { devOTP: otp }),
       },
       { status: 200 }
