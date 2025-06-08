@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
-// Dynamically import email functions only when needed
 async function getEmailFunctions() {
   try {
     const emailModule = await import("@/lib/email");
@@ -35,12 +34,12 @@ export async function POST(request) {
     let otp = "12345678"; // Default OTP for development
     let emailSent = false;
 
-    // Try to use email functions if available
+   
     const emailFunctions = await getEmailFunctions();
     if (emailFunctions) {
       otp = emailFunctions.generateOTP();
 
-      // Send OTP email (only if email service is configured)
+     
       if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
         const emailResult = await emailFunctions.sendOTPEmail(
           email,
