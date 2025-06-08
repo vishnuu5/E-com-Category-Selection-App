@@ -59,7 +59,7 @@ export async function POST(request) {
     const db = client.db();
     const otpCollection = db.collection("otps");
 
-    // Store OTP in database (separate collection for flexibility)
+    
     await otpCollection.insertOne({
       email,
       otp,
@@ -75,7 +75,6 @@ export async function POST(request) {
           ? "OTP sent successfully to your email"
           : "OTP generated successfully (email service not configured)",
         emailSent,
-        // In development, show the OTP in response (remove in production)
         ...(process.env.NODE_ENV === "development" && { devOTP: otp }),
       },
       { status: 200 }
