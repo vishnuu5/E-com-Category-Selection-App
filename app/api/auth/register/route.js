@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { hashPassword } from "@/lib/auth";
 
-// Dynamically import email functions only when needed
+
 async function getEmailFunctions() {
   try {
     const emailModule = await import("@/lib/email");
@@ -49,18 +49,18 @@ export async function POST(request) {
     let otp = "12345678"; // Default OTP for development
     let emailSent = false;
 
-    // Try to use email functions if available
+    
     const emailFunctions = await getEmailFunctions();
     if (emailFunctions) {
       otp = emailFunctions.generateOTP();
 
-      // Send OTP email (only if email service is configured)
+      
       if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
         const emailResult = await emailFunctions.sendOTPEmail(email, otp, name);
         emailSent = emailResult.success;
         if (!emailResult.success) {
           console.error("Failed to send OTP email:", emailResult.error);
-          // In production, you might want to return an error here
+         
           if (process.env.NODE_ENV === "production") {
             return NextResponse.json(
               {
@@ -75,7 +75,7 @@ export async function POST(request) {
 
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
-    // Create user (not verified yet)
+   
     const hashedPassword = hashPassword(password);
     const result = await users.insertOne({
       name,
@@ -95,7 +95,7 @@ export async function POST(request) {
       userId: result.insertedId.toString(),
     };
 
-    // ONLY show OTP in development mode
+ 
     if (process.env.NODE_ENV === "development") {
       response.devOTP = otp;
     }
